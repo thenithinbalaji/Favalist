@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favalist</title>
+
+    <meta name="description"
+        content="Discover, save, and share your favorite things with Favalist. Meet new people with similar taste.">
+
+    <meta name="keywords" content="favorites, list, collection, discovery, sharing, categories, social, dating">
+    <meta name="author" content="thenithinbalaji">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Favalist - Your Ultimate Favorite List">
+    <meta property="og:description"
+        content="Discover, save, and share your favorite things with Favalist. Meet new people with similar taste.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/assets/thumbnail.jpg">
+    <!-- <meta property="og:url" content="https://example.com"> -->
+
+    <!-- Stylesheets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Galada&display=swap" rel="stylesheet">
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <!-- Box Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+</head>
+
+<body ng-app="myApp" ng-controller="customersCtrl">
+
+    <nav class="w-full p-5 md:flex justify-around">
+
+        <div class="flex flex-col justify-center gap-5 my-auto">
+            <a href="/" class="flex gap-2 w-fit">
+                <img src="/assets/logo.png" class="w-8 h-8" alt="Favalist Logo">
+                <p class="font-[Galada] text-3xl py-auto">Favalist</p>
+            </a>
+        </div>
+
+        <div class="my-auto w-full md:w-1/2">
+            <div>
+                <label for="default-search"
+                    class="mb-2 text-sm font-medium text-gray-900 sr-only remove:text-white">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 remove:text-gray-400" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="search" id="search"
+                        class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 remove:bg-gray-700 remove:border-gray-600 remove:placeholder-gray-400 remove:text-white remove:focus:ring-blue-500 remove:focus:border-blue-500"
+                        placeholder="Search Username" required>
+                    <button type="submit"
+                        class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 remove:bg-blue-600 remove:hover:bg-blue-700 remove:focus:ring-blue-800"
+                        onclick="search()">Search</button>
+                </div>
+
+                <script>
+                    function search() {
+                        var username = document.getElementById("search").value
+                        username = username.trim()
+
+                        if (username != "")
+                            window.location.href = "/profile/" + username
+                    }
+                </script>
+
+            </div>
+        </div>
+
+        <div class="flex gap-3 justify-center my-5 rounded-lg bg-gray-50 py-3 px-6">
+            <div class="hover:scale-[1.25] my-auto">
+                <a href="/likes" class="text-4xl">😎</a>
+            </div>
+
+            <div class="hover:scale-[1.25] my-auto">
+                <a href="/smashlist" class="text-4xl">😙</a>
+            </div>
+
+            <a href="/logout"
+                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">
+                Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="w-full flex justify-center">
+        <div class="w-fit">
+            <div class="flex justify-center mt-5 mb-10">
+                <h1 class="text-4xl font-bold px-5">Users who liked your profile</h1>
+            </div>
+            <input type="text" ng-model="searchText" placeholder="Filter Users"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4">
+        </div>
+    </div>
+
+    <div class="flex justify-end px-10 gap-5 my-5">
+        <button ng-click="layoutType = 'grid'"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">Grid
+            Layout</button>
+        <button ng-click="layoutType = 'list'"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">List
+            Layout</button>
+    </div>
+
+    <div ng-switch="layoutType">
+        <div ng-switch-when="grid">
+            <!-- Grid Layout -->
+            <div class="grid-layout">
+                <!-- Grid layout content goes here -->
+
+                <div class="flex justify-center mt-10">
+                    <div class="sm:grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 gap-5">
+                        <div ng-repeat="username in myData | filter: searchText"
+                            class="p-5 border w-fit rounded-xl hover:scale-105 shadow-lg">
+                            <img src="https://robohash.org/{{username}}?bgset=bg2" alt="Profile Picture"
+                                class="w-40 sm:w-48 shadow-lg rounded-full">
+                            <div class="flex justify-center">
+                                <p class="font-bold mt-3">{{ username }}</p>
+                            </div>
+
+                            <div class="flex justify-center mt-3">
+                                <a href="/profile/{{ username }}"
+                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-switch-when="list">
+            <!-- List Layout -->
+            <div class="list-layout">
+                <!-- List layout content goes here -->
+
+                <div class="flex justify-center mt-10">
+                    <div class="flex flex-col gap-5">
+                        <div ng-repeat="username in myData | filter: searchText"
+                            class="p-5 border w-fit rounded-xl hover:scale-105 shadow-lg flex gap-5">
+
+                            <img src="https://robohash.org/{{username}}?bgset=bg2" alt="Profile Picture"
+                                class="w-40 sm:w-48 shadow-lg rounded-full">
+
+                            <div class="my-auto">
+                                <div class="flex justify-center">
+                                    <p class="font-bold mt-3">{{ username }}</p>
+                                </div>
+
+                                <div class="flex justify-center mt-3">
+                                    <a href="/profile/{{ username }}"
+                                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">
+                                        View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-switch-default>
+            <!-- Default Layout -->
+            <div class="default-layout">
+                <!-- Default layout content goes here -->
+
+                <div class="flex justify-center mt-10">
+                    <div class="sm:grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 gap-5">
+                        <div ng-repeat="username in myData | filter: searchText"
+                            class="p-5 border w-fit rounded-xl hover:scale-105 shadow-lg">
+                            <img src="https://robohash.org/{{username}}?bgset=bg2" alt="Profile Picture"
+                                class="w-40 sm:w-48 shadow-lg rounded-full">
+                            <div class="flex justify-center">
+                                <p class="font-bold mt-3">{{ username }}</p>
+                            </div>
+
+                            <div class="flex justify-center mt-3">
+                                <a href="/profile/{{ username }}"
+                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none h-fit my-auto">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('customersCtrl', function ($scope, $http) {
+            $http.get("/likesjson").then(function (response) {
+                console.log(response.data);
+                $scope.myData = response.data;
+            });
+        });
+    </script>
+</body>
+
+</html>
