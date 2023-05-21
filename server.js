@@ -7,6 +7,7 @@ const request = require('request')
 const querystring = require('querystring');
 const axios = require('axios');
 const { error } = require("console");
+const e = require("express");
 require('dotenv').config();
 
 const app = express();
@@ -41,20 +42,29 @@ app.get("/", (req, res) => {
         res.render("favalist");
     }
     else {
+        // console.log("inside home route before refreshing session user and feed")
+        // console.log(req.session);
+
         db.collection("users").findOne({ "username": req.session.user.username }, (err, result) => {
+            // console.log("updated session user")
             req.session.user = result;
+
+            // console.log([...req.session.user.smashlist, req.session.user.username]);
+
+            // fetch a random user from db who is not in the current user's smashlist, current user's username and current user's unlikelist
+            db.collection("users").findOne({ "username": { $nin: [...req.session.user.smashlist, req.session.user.username, ...req.session.unlikelist] } }, (err, result) => {
+                // console.log("DB Fetch occured in home");
+                if (result == null) {
+                    res.render("home", { data: null });
+                }
+                else {
+                    data = result;
+                    // console.log(data);
+                    res.render("home", { data });
+                }
+            });
         });
 
-
-        console.log(req.session.user.smashlist);
-        console.log([...req.session.user.smashlist, req.session.user.username]);
-        // fetch a random user from db whose username is not equal to req.session.user 
-        db.collection("users").findOne({ "username": { $nin: [...req.session.user.smashlist, req.session.user.username] } }, (err, result) => {
-            data = result;
-            console.log(data);
-            res.render("home", { data });
-
-        });
     }
 });
 
@@ -82,15 +92,16 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     db.collection("users").findOne({ "email": req.body.email, "password": req.body.password }, (err, result) => {
-        console.log(result);
+        // console.log(result);
 
         if (result == null) {
             res.render("login", { error: "Invalid email or password" });
         }
         else {
             req.session.user = result;
+            req.session.unlikelist = [];
             res.redirect("/");
         }
     });
@@ -107,13 +118,13 @@ app.get("/signup", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     topArtists = req.body.topArtists == "" ? [] : JSON.parse(req.body.topArtists);
     topTracks = req.body.topTracks == "" ? [] : JSON.parse(req.body.topTracks);
 
     //check if username or email already exists
     db.collection("users").findOne({ $or: [{ "username": req.body.username }, { "email": req.body.email }] }, (err, result) => {
-        console.log(result);
+        // console.log(result);
 
         if (result == null) {
             db.collection("users").insertOne({
@@ -134,7 +145,7 @@ app.post("/signup", (req, res) => {
             res.redirect("login");
         }
         else {
-            console.log("Username or email already exists");
+            // console.log("Username or email already exists");
             res.render("signup", { error: "Username or email already exists" });
         }
     });
@@ -156,36 +167,52 @@ app.use((req, res, next) => {
 
 app.get("/like/:str", (req, res) => {
 
+    // console.log("like page called on " + req.params.str + " by " + req.session.user.username + "")
+
     db.collection("users").findOne({ "username": req.params.str }, (err, result) => {
-        if (result == null) {
-            res.redirect("/")
-        }
-        else {
+        if (result != null) {
             user = req.params.str;
-            db.collection("users").updateOne({ "username": req.session.user.username }, { "$addToSet": { "smashlist": user } });
-            db.collection("users").updateOne({ "username": user }, { "$addToSet": { "likelist": req.session.user.username } });
+            db.collection("users").updateOne({ "username": req.session.user.username }, { "$addToSet": { "smashlist": user } }, (err, result) => {
+                db.collection("users").updateOne({ "username": user }, { "$addToSet": { "likelist": req.session.user.username } }, (err, result) => {
+
+                    // console.log("like page db update called")
+                    res.redirect("/")
+
+                });
+            });
+        }
+
+        else {
+            res.redirect("/")
         }
     });
 
-    res.redirect("/")
 });
 
 app.get("/unlike/:str", (req, res) => {
 
+    // console.log("unlike page called on " + req.params.str + " by " + req.session.user.username + "");
 
     db.collection("users").findOne({ "username": req.params.str }, (err, result) => {
-        if (result == null) {
-            res.redirect("/")
-        }
-        else {
+        if (result != null) {
             user = req.params.str;
-            db.collection("users").updateOne({ "username": req.session.user.username }, { "$pull": { "smashlist": user } });
-            db.collection("users").updateOne({ "username": user }, { "$pull": { "likelist": req.session.user.username } });
+            db.collection("users").updateOne({ "username": req.session.user.username }, { "$pull": { "smashlist": user } }, (err, result) => {
+                db.collection("users").updateOne({ "username": user }, { "$pull": { "likelist": req.session.user.username } }, (err, result) => {
+
+                    req.session.unlikelist.push(user);
+                    // console.log("immediately after pushing");
+                    // console.log(req.session)
+                    res.redirect("/");
+
+                });
+            });
         }
 
+        else {
+            res.redirect("/");
+        }
     });
 
-    res.redirect("/")
 });
 
 app.get("/likes", (req, res) => {

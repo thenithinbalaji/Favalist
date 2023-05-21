@@ -122,7 +122,7 @@
             Layout</button>
     </div>
 
-    <div ng-switch="layoutType">
+    <div ng-switch="layoutType" class="mb-20">
         <div ng-switch-when="grid">
             <!-- Grid Layout -->
             <div class="grid-layout">
@@ -211,12 +211,11 @@
             </div>
         </div>
     </div>
-    </div>
+
     <script>
         var app = angular.module('myApp', []);
         app.controller('customersCtrl', function ($scope, $http) {
             $http.get("/likesjson").then(function (response) {
-                console.log(response.data);
                 $scope.myData = response.data;
             });
         });

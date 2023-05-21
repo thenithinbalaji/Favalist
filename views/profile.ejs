@@ -121,7 +121,8 @@
 
                     <% let numberOfFavorites=0; %>
                         <% Object.keys(data).forEach(key=> {
-                            if (key !== 'username' && key !== 'email' && key !== 'password' && data[key] !== '') {
+                            if (key != 'username' && key != 'email' && key != 'password' && key != '_id' && data[key] !=
+                            [] && data[key] != "") {
                             numberOfFavorites++;
                             }
                             }); %>
@@ -195,7 +196,7 @@
     </div>
 
     <p class="my-10 text-center text-sm text-gray-500">
-        Build with ❤️ by thenithinbalaji
+        Built with ❤️ by thenithinbalaji
     </p>
 </body>
 
