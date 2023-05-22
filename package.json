@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -8,18 +7,20 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "mongoose": "^7.1.1",
-    "postcss": "^8.4.23",
-    "request": "^2.88.2",
-    "tailwindcss": "^3.3.2"
+    "request": "^2.88.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "autoprefixer": "^10.4.14",
+    "nodemon": "^2.0.22",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2"
   },
   "name": "favalist",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "tailwindbuild": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch"
   },
   "keywords": [
     "favorites",
