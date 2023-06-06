@@ -46,4 +46,4 @@ SPOTIFY_CLIENT_ID = ""
 SPOTIFY_CLIENT_SECRET = ""
 ```
 
-![image](https://github.com/thenithinbalaji/Favalist/assets/73932121/4213e7ef-bee8-41c2-97eb-083f2099595f)
+![image](readme_assets/feed.png)
