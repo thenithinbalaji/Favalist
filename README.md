@@ -1,6 +1,6 @@
 # Favalist
 
-![image](https://github.com/thenithinbalaji/Favalist/assets/73932121/47ed4ade-b526-46cc-92b3-f84f9d7061ae)
+![image](readme_assets/home.png)
 
 
 Favalist is an open-source social platform where you can share your favorite things with the world. You can discover new things and meet new people with similar tastes. This project was created using [Express JS](https://expressjs.com/) and
@@ -20,7 +20,7 @@ npm run start
 ```
 Open http://localhost:3000 to view it in your browser.
 
-![image](https://github.com/thenithinbalaji/Favalist/assets/73932121/d6e93d22-d8aa-4ce9-bb7f-380bb4035723)
+![image](readme_assets/signup.png)
 
 ## Prerequisites
 
