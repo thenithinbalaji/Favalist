@@ -20,6 +20,7 @@
   "main": "index.js",
   "scripts": {
     "devStart": "nodemon server.js",
+    "start" : "node server.js",
     "tailwindbuild": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch"
   },
   "keywords": [
