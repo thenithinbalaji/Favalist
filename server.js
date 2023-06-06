@@ -70,7 +70,7 @@ app.get("/", (req, res) => {
 
 
 app.get("/profile/:str", (req, res) => {
-    db.collection("users").findOne({ "username": req.params.str }, (err, result) => {
+    db.collection("users").findOne({ "username": req.params.str.toLowerCase() }, (err, result) => {
         if (result == null) {
             res.render("noprofile");
         }

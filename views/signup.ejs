@@ -45,7 +45,7 @@
 
 <body ng-app="">
 
-    <nav class="w-full p-5">
+    <nav class="w-fit p-5">
         <div class="flex flex-col justify-center">
             <a href="/" class="flex gap-2">
                 <img src="/assets/logo.png" class="w-8 h-8" alt="Favalist Logo">
@@ -115,7 +115,7 @@
 
                                 <input id="name" name="username" type="text" ng-model="username" required
                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-4"
-                                    pattern="^[A-Za-z]{5,25}$">
+                                    pattern="^[a-z]{5,25}$">
 
                                 <div ng-show="form.username.$valid"
                                     class="bg-green-200 rounded-md px-4 py-3 shadow-md mt-2" role="alert">
@@ -123,7 +123,8 @@
 
                                 <div ng-show="form.username.$error.pattern"
                                     class="bg-blue-100 rounded px-4 py-3 shadow-md mt-2" role="alert">
-                                    Username must be between 5 and 25 characters and only contain letters</div>
+                                    Username must be between 5 and 25 characters and only contain lowercase letters
+                                </div>
                             </div>
                         </div>
 
